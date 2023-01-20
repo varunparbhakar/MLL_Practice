@@ -16,35 +16,46 @@ from sklearn.metrics import confusion_matrix
 df = pd.read_table("Dataset/YouTube-User-Text-gender-personality.tsv")
 print(df.shape)
 
-
 data_YouTube = df.loc[:,['transcripts', 'gender']]
 
 
 # Splitting the data into 300 training instances and 104 test instances
-n = 104
+trainingExamples = 104
 all_Ids = np.arange(len(data_YouTube))
-
+# print(np.arange(50))
+# print(all_Ids)
 random.shuffle(all_Ids)
-test_Ids = all_Ids[0:n]
-train_Ids = all_Ids[n:]
+# print(all_Ids)
+
+# Usually starting index is inclusive and ending is
+# exclusive but in this case they are both inclusive
+
+test_Ids = all_Ids[0:trainingExamples]
+print("Length of test id:",len(test_Ids))
+train_Ids = all_Ids[trainingExamples:]
 data_test = data_YouTube.loc[test_Ids, :]
-data_train = data_YouTube.loc[train_Ids, :]
+print(data_test)
+# data_train = data_YouTube.loc[train_Ids, :]
+# print("Length of train ids:",len(test_Ids))
+# print("Length of data test :",len(test_Ids))
+# print("Length of data train :",len(test_Ids))
 
-# Training a Naive Bayes model
-count_vect = CountVectorizer()
-X_train = count_vect.fit_transform(data_train['transcripts'])
-y_train = data_train['gender']
-clf = MultinomialNB()
-clf.fit(X_train, y_train)
-
-# Testing the Naive Bayes model
-X_test = count_vect.transform(data_test['transcripts'])
-y_test = data_test['gender']
-y_predicted = clf.predict(X_test)
-
-# Reporting on classification performance
-print("Accuracy: %.2f" % accuracy_score(y_test,y_predicted))
-classes = ['Male','Female']
-cnf_matrix = confusion_matrix(y_test,y_predicted,labels=classes)
-print("Confusion matrix:")
-print(cnf_matrix)
+#
+# # Training a Naive Bayes model
+# count_vect = CountVectorizer()
+# X_train = count_vect.fit_transform(data_train['transcripts'])
+# y_train = data_train['gender']
+# clf = MultinomialNB()
+# clf.fit(X_train, y_train)
+#
+# # Testing the Naive Bayes model
+# X_test = count_vect.transform(data_test['transcripts'])
+# y_test = data_test['gender']
+# y_predicted = clf.predict(X_test)
+#
+# # Reporting on classification performance
+# print("Accuracy: %.2f" % accuracy_score(y_test,y_predicted))
+# classes = ['Male','Female']
+# cnf_matrix = confusion_matrix(y_test,y_predicted,labels=classes)
+# print("Confusion matrix:")
+# print(cnf_matrix)
